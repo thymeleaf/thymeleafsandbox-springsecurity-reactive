@@ -27,8 +27,8 @@
   <version>ci</version>
   <packaging>jar</packaging>
 
-  <name>Thymeleaf Sandbox - Spring Security MVC</name>
-  <description>Thymeleaf Sandbox - Spring Security MVC</description>
+  <name>Thymeleaf Sandbox - Spring Security Reactive</name>
+  <description>Thymeleaf Sandbox - Spring Security Reactive</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
