@@ -1,6 +1,7 @@
 package thymeleafsandbox.springsecurity.web.controller;
 
 import java.util.Locale;
+import java.util.Map;
 
 
 import org.springframework.stereotype.Controller;
@@ -62,28 +63,6 @@ public class MainController {
     @RequestMapping("/simulateError.html")
     public void simulateError() {
         throw new RuntimeException("This is a simulated error message");
-    }
-
-    /** Error page. */
-    @RequestMapping("/error.html")
-    public Mono<String> error(ServerWebExchange exchange, Model model) {
-
-        System.out.println("ATTS");
-        System.out.println(exchange.getAttributes());
-        System.out.println("REQUEST");
-        System.out.println(exchange.getRequest().getQueryParams());
-
-//        model.addAttribute("errorCode", "Error " + request.getAttribute("javax.servlet.error.status_code"));
-//        Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
-//        StringBuilder errorMessage = new StringBuilder();
-//        errorMessage.append("<ul>");
-//        while (throwable != null) {
-//            errorMessage.append("<li>").append(HtmlEscape.escapeHtml5(throwable.getMessage())).append("</li>");
-//            throwable = throwable.getCause();
-//        }
-//        errorMessage.append("</ul>");
-//        model.addAttribute("errorMessage", errorMessage.toString());
-        return Mono.just("error");
     }
 
     /** Error page. */
