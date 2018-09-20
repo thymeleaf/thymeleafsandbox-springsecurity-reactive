@@ -53,7 +53,7 @@ public class SpringSecurityConfig {
 //                        new RedirectServerAuthenticationFailureHandler("/login-error.html"))
             .and()
                 .logout()
-                .logoutUrl("/index.html")
+                .logoutUrl("/logout")
             .and()
                 .authorizeExchange()
                 .pathMatchers("/admin/**").hasRole("ADMIN")
