@@ -19,6 +19,8 @@
  */
 package thymeleafsandbox.springsecurity;
 
+import java.net.URI;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authorization.AuthorityReactiveAuthorizationManager;
@@ -28,7 +30,7 @@ import org.springframework.security.core.userdetails.MapReactiveUserDetailsServi
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.authentication.RedirectServerAuthenticationFailureHandler;
+import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
 import reactor.core.publisher.Mono;
 
 @Configuration
@@ -45,15 +47,19 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(final ServerHttpSecurity http) {
+
+        final RedirectServerLogoutSuccessHandler logoutSuccessHandler = new RedirectServerLogoutSuccessHandler();
+        logoutSuccessHandler.setLogoutSuccessUrl(URI.create("/index.html"));
+
         return http
                 .formLogin()
-                // TODO * Apparently setting a login page the MVC way does not work in WebFlux, FIX THIS
-//                .loginPage("/login.html")
-//                .authenticationFailureHandler(
-//                        new RedirectServerAuthenticationFailureHandler("/login-error.html"))
+                // TODO * No support yet for form-based login in Spring Security for WebFlux:
+                // TODO   https://github.com/spring-projects/spring-security/issues/5767
+                // .loginPage("/login.html")
             .and()
                 .logout()
                 .logoutUrl("/logout")
+                .logoutSuccessHandler(logoutSuccessHandler)
             .and()
                 .authorizeExchange()
                 .pathMatchers("/admin/**").hasRole("ADMIN")
@@ -71,8 +77,7 @@ public class SpringSecurityConfig {
                                                 }
                                                 return AuthorityReactiveAuthorizationManager.hasRole("ADMIN").check(auth, obj);
                                             }))
-                .pathMatchers("/login.html").permitAll()
-                .anyExchange().authenticated()
+                .anyExchange().permitAll() // Except for protected paths above, the rest will be open
             .and()
                 .exceptionHandling()
                 // TODO * There doesn't seem to be a way to specify a page for an Access Denied-type exception...
