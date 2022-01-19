@@ -55,7 +55,7 @@ public class MainController {
     /** Login form with error. */
     @RequestMapping("/login-error.html")
     public Mono<String> loginError(Model model) {
-        model.addAttribute("loginError", true);
+        model.addAttribute("loginError", Boolean.TRUE);
         return Mono.just("login");
     }
 
